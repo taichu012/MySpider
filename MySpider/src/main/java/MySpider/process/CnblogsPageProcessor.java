@@ -5,6 +5,7 @@ package MySpider.process;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -51,20 +52,17 @@ public class CnblogsPageProcessor  implements PageProcessor {
         
         //判断是不是主页的几个page；
         //如果是第一页，则右下角有一个“下一页”
-        String firstIndexPage = page.getHtml().xpath("//div[@id='nav_next_page']/a/text()").toString();
-        if (firstIndexPage!=null){
-        	page.putField("firstIndexPage", firstIndexPage.equals("下一页"));
-        	log.info("["+firstIndexPage+"]");
-        	log.info("firstIndexPage="+page.getResultItems().get("firstIndexPage"));
-        	page.putField("title", "首页");
+        String firstIndexPageFlag = page.getHtml().xpath("//div[@id='nav_next_page']/a/text()").toString();
+        if (firstIndexPageFlag!=null&&firstIndexPageFlag.equals("下一页")){
+        	log.info("Find Index Page[homepage] by find flag=["+firstIndexPageFlag+"]");
+        	page.putField("title", "index");
         }
-        //如果是非第一页的indexpage，有“共X页”结构；
-        String otherIndexPage = page.getHtml().xpath("//div[@class='pager']/text()").toString();
-        if (otherIndexPage!=null&&otherIndexPage.length()>=2){
-        	page.putField("otherIndexPage", otherIndexPage.trim().substring(0,1).equals("共"));
-        	log.info("["+otherIndexPage.trim().substring(0,1)+"]");
-        	log.info("otherIndexPage="+page.getResultItems().get("otherIndexPage"));
-        	page.putField("title", "索引页-"+System.currentTimeMillis());
+        //如果是非第一页的index page，有“共X页”结构；
+        List<String> indexPageX = page.getHtml().xpath("//div[@class='pager']/text()").all();
+        if (indexPageX!=null&&indexPageX.size()>=1){
+        	String indexPageXFlag = getPageNbr(indexPageX.get(0));
+        	log.info("Find Index Page["+indexPageXFlag+"] by find flag=["+indexPageX+"]");
+        	page.putField("title", "index-"+indexPageXFlag);
         }
         
         //skip this page
@@ -73,6 +71,24 @@ public class CnblogsPageProcessor  implements PageProcessor {
 //        	page.setSkip(true);
 //        	}
 
+    }
+    
+    /**
+     * 函数目标：将诸如”共3页:    3 ”中的第3页的3取出；
+     * 函数算法：用冒号分割，右面部分前后取除空格，留下3
+     * @param str 输入类似“共3页:    3 ”
+     * @return 3
+     */
+    public static String getPageNbr(String str){
+    	String ret=null;
+    	if (str==null){
+    		return ret;
+    	}else {
+    		//算法：取出冒号右面部分，再去掉前后的空格，得到中间的数字；
+    		//但trim和普通replace都只是英文半角空格，不是中文全角空格，于是引入正则算法如下：
+    		//去除空格算法：将非数字替换为#，再将#全部删除，就留下了数字！
+    		return str.substring(str.indexOf(':')+1).replaceAll("[^0-9]", "#").replaceAll("#","");
+    	}    	
     }
 
     public Site getSite() {
@@ -89,6 +105,4 @@ public class CnblogsPageProcessor  implements PageProcessor {
 		Date date = new Date(ms);
 		return (formatter.format(date));
 	}
-
-
 }
