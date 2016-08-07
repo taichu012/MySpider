@@ -24,6 +24,13 @@ REQ0007：正则解析了index分页的nbr，并且找到了过滤全角或半�
 TODOLIST: 
 ++++++++++++++++
 
+【OPEN】webmagic：增加需求（解决原来的缺陷）“添加资源的逻辑层次依赖关系，及预期结果”
+	缺陷1：link一股脑放入pagerequest中，多线程分布式取，其中link可能是多个种类，它们之间地位等价；
+	缺陷2：因为link或link指向的期望page之间没有加入其实已经知道的先验的依赖关系，所以无法高效的对page/link按照种类type来决定如何操作，导致pipeline不加区分的只针对page全集
+	设计1：增加page之间的逻辑层次依赖关系，并运行根据关系定义操作，比如A1，A2，A3是平级的，成功一个就不用再尝试下载另外两个page等等，对挖掘的逻辑表达大大增强；
+	设计2：基于“page之间的逻辑层次以来关系及操作定义”，还可加上“预期模型”，它可以用来审计挖掘的结果，统计结果成为知识库，方便以后转向AI；
+	设计3：有了1和2的设计，很容易将process和pipeline更细化到“某一个page”，而非page全集上，表达能力更加强大；
+	考虑将以上想法作为issue提交给webmagic项目，有机会可以参与开发。
 【OPEN】maven：将程序（大jar包），bat，log4j.properties，release_notes.txt等文件打包为release目录
 【OPEN】maven：对maven的打包还不熟悉，有时log4j.properties配置只有修改后才会起效，否则说找不到；
 【OPEN】开发：用bat自动完成对某个含有多html目录来生成index.html，并最终打包此folder，用来备份博客园；
