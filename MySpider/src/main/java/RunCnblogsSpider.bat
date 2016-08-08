@@ -1,19 +1,19 @@
-REM "USAGE: java -jar xxxSpider.jar URL=http://www.cnblogs.com/taichu/ LocalBackupFolder=H:/²©¿Í±¸·İ/²©¿ÍÔ°-www.cnblogs.com/taichu/ \n"
+ï»¿REM "USAGE: java -jar xxxSpider.jar URL=http://www.cnblogs.com/taichu/ LocalBackupFolder=H:/åšå®¢å¤‡ä»½/åšå®¢å›­-www.cnblogs.com/taichu/ \n"
 REM		"arg[URL] is first url feed to spider,"
 REM		"arg[LocalBackupFolder] is used as local backup folder name."
 
-REM È·±£ÔÚÔËĞĞÄ¿Â¼ÖĞ¡°java -version¡±¿ÉÒÔÔËĞĞ£¬ÔòJDK°²×°¼°Â·¾¶ÕıÈ·£»
-REM È·±£URL¸ñÊ½ÕıÈ·£¬LocalBackupFolderÂ·¾¶ÕıÈ·(JAVA³ÌĞòÒªÇóÂ·¾¶ÔÚWINÏµÍ³ÏÂÎª\\»ò/)
-REM ³ÌĞòÖ»ÄÜ½ÓÊÜ2¸ö²ÎÊı£¬¶àÁËÉÙÁË¶¼´í£¬²ÎÊıµÈºÅÁ½±ß²»ÄÜÓĞ¿Õ¸ñ£¬²ÎÊıÖ®¼äÒ»°ã×îºÃ1¸ö¿Õ¸ñ£»
-REM È·±£log4j.propertiesÅäÖÃÔÚÍ¬Ä¿Â¼£¬Ôò»á×Ô¶¯Éú³ÉMySpider.log£»
-REM ÒòÎªwinÄ¬ÈÏÊÇGBKÄ£Ê½£¬Ò²¾ÍÊÇËµÔÚCMDÃüÁîĞĞÔËĞĞµÄ¿ØÖÆÌ¨Êä³öÊÇGBKµÄÓĞÂÒÂë£»²»Ó°Ïì³ÌĞòÔËĞĞÊ±È«²¿ÓÃutf-8£»
-REM ÖØÒª£¡£¡£¡Ä¿Ç°Ö»ÄÜÅÀÈ¡cnblogs£¨²©¿ÍÔ°£©µÄÍøÕ¾£¡²»Ö§³ÖÆäËûÍøÕ¾£¡£¡£¡
+REM ç¡®ä¿åœ¨è¿è¡Œç›®å½•ä¸­â€œjava -versionâ€å¯ä»¥è¿è¡Œï¼Œåˆ™JDKå®‰è£…åŠè·¯å¾„æ­£ç¡®ï¼›
+REM ç¡®ä¿URLæ ¼å¼æ­£ç¡®ï¼ŒLocalBackupFolderè·¯å¾„æ­£ç¡®(JAVAç¨‹åºè¦æ±‚è·¯å¾„åœ¨WINç³»ç»Ÿä¸‹ä¸º\\æˆ–/)
+REM ç¨‹åºåªèƒ½æ¥å—2ä¸ªå‚æ•°ï¼Œå¤šäº†å°‘äº†éƒ½é”™ï¼Œå‚æ•°ç­‰å·ä¸¤è¾¹ä¸èƒ½æœ‰ç©ºæ ¼ï¼Œå‚æ•°ä¹‹é—´ä¸€èˆ¬æœ€å¥½1ä¸ªç©ºæ ¼ï¼›
+REM ç¡®ä¿log4j.propertiesé…ç½®åœ¨åŒç›®å½•ï¼Œåˆ™ä¼šè‡ªåŠ¨ç”ŸæˆMySpider.logï¼›
+REM å› ä¸ºwiné»˜è®¤æ˜¯GBKæ¨¡å¼ï¼Œä¹Ÿå°±æ˜¯è¯´åœ¨CMDå‘½ä»¤è¡Œè¿è¡Œçš„æ§åˆ¶å°è¾“å‡ºæ˜¯GBKçš„æœ‰ä¹±ç ï¼›ä¸å½±å“ç¨‹åºè¿è¡Œæ—¶å…¨éƒ¨ç”¨utf-8ï¼›
+REM é‡è¦ï¼ï¼ï¼ç›®å‰åªèƒ½çˆ¬å–cnblogsï¼ˆåšå®¢å›­ï¼‰çš„ç½‘ç«™ï¼ä¸æ”¯æŒå…¶ä»–ç½‘ç«™ï¼ï¼ï¼
 
-REM ÈçÏÂÓÃ¾ø¶ÔÂ·¾¶À´Æô¶¯ÅÀ³æ
-REM java -cp .;MySpider_0.0.1-SNAPSHOT_JDK1.8.jar MySpider.spider.CnblogsSpider URL=http://www.cnblogs.com/taichu/ LocalBackupFolder=J:/360YUNPAN/360SYNC/ÎÒµÄ³ÌĞò/Ë½ÈË²©¿Í/²©¿ÍÔ°±¸·İ/²©¿ÍÔ°-www.cnblogs.com/taichu/
+REM å¦‚ä¸‹ç”¨ç»å¯¹è·¯å¾„æ¥å¯åŠ¨çˆ¬è™«
+REM java -cp .;MySpider_0.0.1-SNAPSHOT_JDK1.8.jar MySpider.spider.CnblogsSpider URL=http://www.cnblogs.com/taichu/ LocalBackupFolder=J:/360YUNPAN/360SYNC/æˆ‘çš„ç¨‹åº/ç§äººåšå®¢/åšå®¢å›­å¤‡ä»½/åšå®¢å›­-www.cnblogs.com/taichu/
 
-REM ÈçÏÂÓÃÏà¶ÔÂ·¾¶À´Æô¶¯ÅÀ³æ£¨ÓĞÀûÓÚ½«³ÌĞòºÍÊı¾İ¶¼·ÅÔÚÔÆÅÌÉÏ£¬ÒòÎªÔÆÅÌ¶ÔÔÚ±¾µØ¾ø¶ÔÂ·¾¶²»Í¬£¬µ«Ïà¶ÔÂ·¾¶²»±ä£¡£©
-java -cp .;MySpider_0.0.1-SNAPSHOT_JDK1.8.jar MySpider.spider.CnblogsSpider URL=http://www.cnblogs.com/taichu/ LocalBackupFolder=../../../../Ë½ÈË²©¿Í/²©¿ÍÔ°±¸·İ/²©¿ÍÔ°-www.cnblogs.com/taichu/
+REM å¦‚ä¸‹ç”¨ç›¸å¯¹è·¯å¾„æ¥å¯åŠ¨çˆ¬è™«ï¼ˆæœ‰åˆ©äºå°†ç¨‹åºå’Œæ•°æ®éƒ½æ”¾åœ¨äº‘ç›˜ä¸Šï¼Œå› ä¸ºäº‘ç›˜å¯¹åœ¨æœ¬åœ°ç»å¯¹è·¯å¾„ä¸åŒï¼Œä½†ç›¸å¯¹è·¯å¾„ä¸å˜ï¼ï¼‰
+java -cp .;MySpider_0.0.1-SNAPSHOT_JDK1.8.jar MySpider.spider.CnblogsSpider URL=http://www.cnblogs.com/taichu/ LocalBackupFolder=../../../../ç§äººåšå®¢/åšå®¢å›­å¤‡ä»½/åšå®¢å›­-www.cnblogs.com/taichu/
 
-REM ÈçÏÂÆô¶¯²»ÁË£¨TODO£º´ıµ÷²é£©
-REM java -jar MySpider_0.0.1-SNAPSHOT_JDK1.8.jar URL=http://www.cnblogs.com/taichu/ LocalBackupFolder=H:/²©¿Í±¸·İ/²©¿ÍÔ°-www.cnblogs.com/taichu/
+REM å¦‚ä¸‹å¯åŠ¨ä¸äº†ï¼ˆTODOï¼šå¾…è°ƒæŸ¥ï¼‰
+REM java -jar MySpider_0.0.1-SNAPSHOT_JDK1.8.jar URL=http://www.cnblogs.com/taichu/ LocalBackupFolder=H:/åšå®¢å¤‡ä»½/åšå®¢å›­-www.cnblogs.com/taichu/

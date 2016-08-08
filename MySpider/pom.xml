@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>MySpider</groupId>
   <artifactId>MySpider</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>MySpider</name>
@@ -31,6 +31,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+<!-- 用assembly的execution来自定义源码打包，而不用maven自带的plugin打包
 			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>2.1</version>
@@ -45,14 +46,14 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
+			</plugin>   -->
+<!--  			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
 					<archive>
-						<!--  <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>  -->
+						<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
 						<manifest>
 							<addClasspath>true</addClasspath>
 						</manifest>
@@ -60,11 +61,14 @@
 					<classesDirectory>
 					</classesDirectory>
 				</configuration>
-			</plugin>
+			</plugin>   -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
+				<!-- 如果assembly的配置放在所有executions前面则全局起作用
+				     那么这里是将依赖jar打入，则会为每个execution都生成一个同样的jar包（带依赖），
+				  所以不合适。将下段配置单独用execution包裹后，继承finalname先打包为jar（带依赖）   
 					<archive>  
                     	<manifest>  
                         	<mainClass>MySpider.spider.CnblogsSpider.Main</mainClass>  
@@ -72,11 +76,11 @@
                 	</archive> 
 					<descriptorRefs>  
                     	<descriptorRef>jar-with-dependencies</descriptorRef>  
-                	</descriptorRefs> 
+                	</descriptorRefs>  -->
 				</configuration>
 				<executions>
 					<execution>
-						<id>make-install-bin-pagekage-as-zip</id>
+						<id>make-bin-jar-with-dependencies</id>
 						<goals>
 							<goal>single</goal>
 						</goals>
@@ -86,11 +90,34 @@
 							<outputDirectory>
 								${project.build.directory}/${project.build.finalName}
 							</outputDirectory>
-							<descriptors>
+							<archive>  
+                    			<manifest>  
+                        		<mainClass>MySpider.spider.CnblogsSpider.Main</mainClass>  
+                    			</manifest>  
+                			</archive> 
+							<descriptorRefs>  
+                    			<descriptorRef>jar-with-dependencies</descriptorRef>  
+                			</descriptorRefs> 
+						</configuration>
+					</execution>
+					<!-- 下面将上述jar（带依赖）大包压缩为zip -->
+					<execution>
+						<id>make-bin-package-as-zip</id>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<outputDirectory>
+								${project.build.directory}/${project.build.finalName}
+							</outputDirectory>
+                			<descriptors>
 								<descriptor>assembly-bin.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
+					<!-- 下面将所有源码（包括maven的pom.xml及eclipse工程）压缩为zip -->
 					<execution>
 						<id>make-source-package-as-zip</id>
 						<goals>
@@ -101,7 +128,6 @@
 							<appendAssemblyId>false</appendAssemblyId>
 							<finalName>${project.name}_${project.version}_JDK${jdk.version}_src</finalName>
 							<outputDirectory>
-								<!-- ${project.build.directory}/${project.build.finalName}/source -->
 								${project.build.directory}/${project.build.finalName}
 							</outputDirectory>
 							<descriptors>

@@ -9,12 +9,26 @@
 	<fileSets>
 		<!-- 把项目自己编译出来的jar文件，打包进zip文件的根目录 -->  
         <fileSet>  
-            <directory>${project.build.directory}</directory>  
+            <directory>${project.build.directory}/${project.build.finalName}</directory>  
             <includes>  
                 <include>*.jar</include>  
             </includes> 
             <excludes>
-				<exclude>*-sources.jar</exclude>
+				<exclude>*sources.jar</exclude>
+				<exclude>*src.jar</exclude>
+				<exclude>*.zip</exclude>
+			</excludes> 
+            <outputDirectory>./</outputDirectory>  
+        </fileSet>
+        <fileSet>  
+            <directory>src/main/java</directory>  
+            <includes>  
+                <include>**/*.bat</include>  
+                <include>**/log4j.properties</include>  
+                <include>**/*.txt</include>  
+            </includes> 
+            <excludes>
+				<exclude>*.jar</exclude>
 				<exclude>*.zip</exclude>
 			</excludes> 
             <outputDirectory>./</outputDirectory>  

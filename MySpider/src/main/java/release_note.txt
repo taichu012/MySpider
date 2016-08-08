@@ -14,6 +14,12 @@ REQ0005:实现自主打单独的jar包和src包（都很小且是zip），以及
 REQ0006：增加了win下运行的bat
 REQ0007：正则解析了index分页的nbr，并且找到了过滤全角或半角空格或非数字的方法；
 
+Ed0.0.2（2016-08-08）
+----------------------------
+REQ0008：实现了bat脚本在win下自动将目录下的html生成index page（非JAVA代码）
+REQ0009：实现了bat脚本在win下自动打包资源文件为一个rar（带时间戳）来备份（需要将命令行的rar.exe放在同目录）
+REQ0010:将配置和带着依赖的大jar包打包为ZIP，编译多次发布
+REQ0010：实现了bat脚本用来运行爬车。考虑到3个bat各自需要一定时间，所以不放在同一个bat中运行；详见readme.txt
 
 
 
@@ -24,6 +30,7 @@ REQ0007：正则解析了index分页的nbr，并且找到了过滤全角或半�
 TODOLIST: 
 ++++++++++++++++
 
+【OPEN】目前程序默认是：“5线程，site重试1次，每次请求间隔1秒”，这些都可配置，但先不做。
 【OPEN】webmagic：增加需求（解决原来的缺陷）“添加资源的逻辑层次依赖关系，及预期结果”
 	缺陷1：link一股脑放入pagerequest中，多线程分布式取，其中link可能是多个种类，它们之间地位等价；
 	缺陷2：因为link或link指向的期望page之间没有加入其实已经知道的先验的依赖关系，所以无法高效的对page/link按照种类type来决定如何操作，导致pipeline不加区分的只针对page全集
@@ -31,9 +38,9 @@ TODOLIST:
 	设计2：基于“page之间的逻辑层次以来关系及操作定义”，还可加上“预期模型”，它可以用来审计挖掘的结果，统计结果成为知识库，方便以后转向AI；
 	设计3：有了1和2的设计，很容易将process和pipeline更细化到“某一个page”，而非page全集上，表达能力更加强大；
 	考虑将以上想法作为issue提交给webmagic项目，有机会可以参与开发。
-【OPEN】maven：将程序（大jar包），bat，log4j.properties，release_notes.txt等文件打包为release目录
-【OPEN】maven：对maven的打包还不熟悉，有时log4j.properties配置只有修改后才会起效，否则说找不到；
-【OPEN】开发：用bat自动完成对某个含有多html目录来生成index.html，并最终打包此folder，用来备份博客园；
+【CLOSED】maven：将程序（大jar包），bat，log4j.properties，release_notes.txt等文件打包为release目录
+【PENDING】maven：对maven的打包还不熟悉，有时log4j.properties配置只有修改后才会起效，否则说找不到；
+【CLOSED】开发：用bat自动完成对某个含有多html目录来生成index.html，并最终打包此folder，用来备份博客园；
 【CLOSED】开发：能正确解析index页的具体是page=？多少，以便生成的html名字带上争取的号码；算法详见相关process类 
 【CLOSED】开发：参数化传入博客园的URL来实现对某“user”的文章抓取；
 【CLOSED】开发：传入参数args数量验证（不严重正确性；URL错则抓取不到page；folder错则无法保存，用户自己按照usage举例验证！）
