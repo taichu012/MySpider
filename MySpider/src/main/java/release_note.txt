@@ -20,6 +20,8 @@ REQ0008：实现了bat脚本在win下自动将目录下的html生成index page�
 REQ0009：实现了bat脚本在win下自动打包资源文件为一个rar（带时间戳）来备份（需要将命令行的rar.exe放在同目录）
 REQ0010:将配置和带着依赖的大jar包打包为ZIP，编译多次发布
 REQ0010：实现了bat脚本用来运行爬车。考虑到3个bat各自需要一定时间，所以不放在同一个bat中运行；详见readme.txt
+REQ0011：将三个bat脚本改为ANSI格式（GB2312/兼容GBK）而非UTF-8；这样在win7/WIN10都可运行；
+	因为win7的cmd无法运行utf-8的bat脚本；而win10的cmd可以；
 
 
 

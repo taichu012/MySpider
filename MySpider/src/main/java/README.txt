@@ -9,6 +9,7 @@
 
 （2）博客备份步骤：
 1. 用“爬虫”获取html的page，详见“RunConblogsSpider.bat”，可以将它设定为计划任务“step1-XXX”；
+	（特别说明：jar包是带版本的，最新是0.0.2，以后升级了需要跟着修改比如0.0.X！！！）
 
 2. 用batch脚本“RunGenIndex.bat”将爬取到的html生成index页，可以设定为计划任务“step2-XXX”；
 	（特别说明：此bat文件要放置在html所在的目录！！！）
