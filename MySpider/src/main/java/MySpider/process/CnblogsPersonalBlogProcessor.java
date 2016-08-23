@@ -22,9 +22,9 @@ import us.codecraft.webmagic.processor.PageProcessor;
  * 爬取（http://www.cnblogs.com/taichu/）博客园上自己的博客
  *
  */
-public class CnblogsPageProcessor  implements PageProcessor {
+public class CnblogsPersonalBlogProcessor  implements PageProcessor {
 
-	private static Logger log = Logger.getLogger(CnblogsPageProcessor.class);
+	private static Logger log = Logger.getLogger(CnblogsPersonalBlogProcessor.class);
 
     private Site site = Site.me().setRetryTimes(1).setSleepTime(1000)
     		.setCharset("utf-8").setUserAgent("Spider");

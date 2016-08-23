@@ -8,7 +8,11 @@ import org.apache.log4j.Logger;
 import MySpider.pipeline.SaveRawPageAsHtmlPipeline;
 import MySpider.process.CnblogsPageProcessor;
 import MySpider.process.GithubRepoPageProcessor;
+import MySpider.process.annotation.GithubRepo;
+import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.model.ConsolePageModelPipeline;
+import us.codecraft.webmagic.model.OOSpider;
 
 /**
  * @author User
@@ -17,9 +21,12 @@ import us.codecraft.webmagic.Spider;
 public class CnblogsSpider {
 
 	private static Logger log = Logger.getLogger(CnblogsSpider.class);
-	private static final String USAGE = "USAGE: java -jar xxxSpider.jar URL=http://www.cnblogs.com/taichu/ LocalBackupFolder=H:/博客备份/博客园-www.cnblogs.com/taichu/ \n"
-			+ "arg[URL] is first url feed to spider,\n"
-			+ "arg[LocalBackupFolder] is used as local backup folder name.";
+	private static final String PARAM_URL="URL=";
+	private static final String PARAM_LOCAL_BACKUP_FOLDER="LocalBackupFolder=";
+	private static final String USAGE = "USAGE: java -jar xxxSpider.jar "+PARAM_URL+"http://www.cnblogs.com/taichu/ "
+			+PARAM_LOCAL_BACKUP_FOLDER+"H:/博客备份/博客园-www.cnblogs.com/taichu/ \n"
+			+ "arg["+PARAM_URL+"] is first url feed to spider,\n"
+			+ "arg["+PARAM_LOCAL_BACKUP_FOLDER+"] is used as local backup folder name.";
 
 	public static void main(String[] args) {
 		
@@ -32,17 +39,19 @@ public class CnblogsSpider {
 			return;
 		} else {
 			//不校验URL，如果错误则spider抓取不到任何值；
-			String url = args[0].trim().substring("URL=".length());
+			String url = args[0].trim().substring(PARAM_URL.length());
 			log.info("args[0]=("+url+")");
 			
 			//不校验本地备份目录参数
-			String localBackupFolder = args[1].trim().substring("LocalBackupFolder=".length());
+			String localBackupFolder = args[1].trim().substring(PARAM_LOCAL_BACKUP_FOLDER.length());
 			log.info("args[1]=("+localBackupFolder+")");
 			
 			//启动spider
 			log.info("启动spider，抓取第一个page("+url+"),并保存到本地目录("+localBackupFolder+")中.");
 			Spider.create(new CnblogsPageProcessor()).addUrl(url)
 					.addPipeline(new SaveRawPageAsHtmlPipeline(localBackupFolder)).thread(5).run();
+			
+
 		}
 	}
 	private static void showUsage(){
