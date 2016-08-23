@@ -1,10 +1,31 @@
 package MySpider.pagetag;
 
 public class Tag {
-	public static final int NORMAL=1;
-	public static final int INDEX=1;
-	public static final int MUTE=1;
+	
+	public static final String HOMEPAGE="homepage"; 
+	public static final String INDEXPAGE="indexpage";
+	public static final String BLOGPAGE="blogpage";
+	public static final String DEFAULT=BLOGPAGE;
 
-//考虑留下接口让process可以动态定义；pipeline可以动态处理；
-	//将动作ACTION拆分为能力单元；并映射到tag标签上去。
+
+	private String tag;
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	public Tag(String tag) {
+		super();
+		this.tag = tag;
+	}
+	
+	public Tag() {
+		super();
+		this.tag = DEFAULT;
+	}
+	
 }

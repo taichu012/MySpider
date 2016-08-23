@@ -1,11 +1,42 @@
 package MySpider.pagetag;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class TaggedPage {
 	private String name;
 	private String content;
-	private List<Tag> tags;
+	private long generatedTimeMs;
+	private ArrayList<Tag> tags;
+	
+	
+	
+	
+	/**
+	 * 定义page的名称name，内容content，逻辑标签集合tags
+	 * @param name name
+	 * @param content content
+	 * @param tags tags
+	 */
+	public TaggedPage(String name, String content, ArrayList<Tag> tags) {
+		super();
+		this.name = name;
+		this.content = content;
+		this.tags = tags;
+		this.generatedTimeMs=System.currentTimeMillis();
+	}
+	
+	public TaggedPage(String name, String content, long generatedTimeMs, ArrayList<Tag> tags) {
+		super();
+		this.name = name;
+		this.content = content;
+		this.generatedTimeMs = generatedTimeMs;
+		this.tags = tags;
+	}
+
+	public long getGeneratedTimeMs() {
+		return generatedTimeMs;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -18,10 +49,10 @@ public class TaggedPage {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public List<Tag> getTags() {
+	public ArrayList<Tag> getTags() {
 		return tags;
 	}
-	public void setTags(List<Tag> tags) {
+	public void setTags(ArrayList<Tag> tags) {
 		this.tags = tags;
 	}
 }
