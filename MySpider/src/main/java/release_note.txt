@@ -24,6 +24,9 @@ REQ0010：实现了bat脚本用来运行爬车。考虑到3个bat各自需要一
 REQ0011：将三个bat脚本改为ANSI格式（GB2312/兼容GBK）而非UTF-8；这样在win7/WIN10都可运行；
 	因为win7的cmd无法运行utf-8的bat脚本；而win10的cmd可以；
 
+Ed0.0.3（2016-08-24）
+----------------------------
+REQ0012:实现了tagged page，用对page打tag来驱动动作action；部分解决了page分类及按需执行操作的问题；
 
 
 

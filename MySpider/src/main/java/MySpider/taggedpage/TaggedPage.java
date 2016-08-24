@@ -1,8 +1,9 @@
-package MySpider.pagetag;
+package MySpider.taggedpage;
 
 import java.util.ArrayList;
 
 public class TaggedPage {
+	public static final String TAGGED_PAGE_FLAG="taggedPage";
 	private String name;
 	private String content;
 	private long generatedTimeMs;

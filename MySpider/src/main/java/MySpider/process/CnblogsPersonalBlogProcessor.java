@@ -10,9 +10,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import MySpider.pagetag.Tag;
-import MySpider.pagetag.TaggedPage;
 import MySpider.pipeline.SaveRawPageAsHtmlPipeline;
+import MySpider.taggedpage.Tag;
+import MySpider.taggedpage.TaggedPage;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -31,51 +31,69 @@ public class CnblogsPersonalBlogProcessor  implements PageProcessor {
 
     private Site site = Site.me().setRetryTimes(1).setSleepTime(1000)
     		.setCharset("utf-8").setUserAgent("Spider");
+    
+    //格式举例："http://www.cnblogs.com/taichu/p/5725417.html"
+    private static final String REG_STR_BLOGPAGE="(http://www\\.cnblogs\\.com/taichu/\\w+/\\w+.html)";
+    //格式举例："href="http://www.cnblogs.com/taichu/default.html?page=1"
+    private static final String REG_STR_BLOGINDEX="(http://www\\.cnblogs\\.com/taichu/default.html\\?page=\\d+)";
+    
+    private static final String REG_STR_TITLEFIELD="//h1[@class='block_title']/a/text()";
+    //私人blog的主页（第一个index页）
+    private static final String REG_STR_BLOGHOMEPAGE="//div[@id='nav_next_page']/a/text()";
+    //私人blog的index（主页作为index1，这里指其他index页）
+    private static final String REG_STR_BLOCKINDEXPAGE="//div[@class='pager']/text()";
 
     public void process(Page page) {
         
-    	//搜索主页（‘http://www.cnblogs.com/taichu/’）
-        //查找普通blog的link并添加到挖掘列表（格式举例："http://www.cnblogs.com/taichu/p/5725417.html")
-        page.addTargetRequests(page.getHtml().links().regex("(http://www\\.cnblogs\\.com/taichu/\\w+/\\w+.html)").all());
+    	//搜索主页（格式举例：‘http://www.cnblogs.com/taichu/’）
+    	
+        //查找普通blog的link并添加到挖掘列表
+        //page.addTargetRequests(page.getHtml().links().regex("(http://www\\.cnblogs\\.com/taichu/\\w+/\\w+.html)").all());
+    	page.addTargetRequests(page.getHtml().links().regex(REG_STR_BLOGPAGE).all());
         
-        //查找索引页（index page）的url病添加到挖掘列表（格式举例：“href="http://www.cnblogs.com/taichu/default.html?page=1“）
-        page.addTargetRequests(page.getHtml().links().regex("(http://www\\.cnblogs\\.com/taichu/default.html\\?page=\\d+)").all());
+        //查找索引页（index page）的url并添加到挖掘列表
+    	//page.addTargetRequests(page.getHtml().links().regex("(http://www\\.cnblogs\\.com/taichu/default.html\\?page=\\d+)").all());
+        page.addTargetRequests(page.getHtml().links().regex(REG_STR_BLOGINDEX).all());
         
-        page.putField("body",page.getRawText());
-        log.info("Got body [xxx].length="+page.getResultItems().get("body").toString().length());
+        //打印page长度
+        log.info("Got page, length="+page.getRawText().length());
         
-        page.putField("title", page.getHtml().xpath("//h1[@class='block_title']/a/text()").toString());
-        log.info("Got title=["+page.getResultItems().get("title")+"]");
+        //查找TITLE字段并保存
+        //page.putField("title", page.getHtml().xpath("//h1[@class='block_title']/a/text()").toString());
+        String pageTitle = page.getHtml().xpath(REG_STR_TITLEFIELD).toString();
+        log.info("Got page title=["+pageTitle+"]");
         
         
-    	//默认设定taggedpage（为blogpage）
+    	//默认设定taggedpage
     	ArrayList<Tag> tags = new ArrayList<Tag>();
-    	tags.add(new Tag(Tag.BLOGPAGE));
-    	page.putField("TaggedPage", new TaggedPage(page.getResultItems().get("title").toString(), page.getRawText(), tags));
+    	if (pageTitle!=null&&pageTitle.length()>0) {
+    		tags.add(new Tag(Tag.BLOGPAGE));
+    	}else {
+    		tags.add(new Tag(Tag.DEFAULT));
+    	}
+    	page.putField(TaggedPage.TAGGED_PAGE_FLAG, new TaggedPage(pageTitle, page.getRawText(), tags));
         
         //判断是不是主页的几个page；
         //如果是第一页，则右下角有一个“下一页”
-        String firstIndexPageFlag = page.getHtml().xpath("//div[@id='nav_next_page']/a/text()").toString();
+        //String firstIndexPageFlag = page.getHtml().xpath("//div[@id='nav_next_page']/a/text()").toString();
+        String firstIndexPageFlag = page.getHtml().xpath(REG_STR_BLOGHOMEPAGE).toString();
         if (firstIndexPageFlag!=null&&firstIndexPageFlag.equals("下一页")){
         	log.info("Find Index Page[homepage] by find flag=["+firstIndexPageFlag+"]");
-        	//page.putField("title", "index");
-        	
-        	//设定taggedpage（为homepage）
+        	//设定taggedpage为homepage
         	tags.clear();
         	tags.add(new Tag(Tag.HOMEPAGE));
-        	page.putField("TaggedPage", new TaggedPage("homepage", page.getResultItems().get("body").toString(), tags));
+        	page.putField(TaggedPage.TAGGED_PAGE_FLAG, new TaggedPage(Tag.HOMEPAGE, page.getRawText(), tags));
         }
         //如果是非第一页的index page，有“共X页”结构；
-        List<String> indexPageX = page.getHtml().xpath("//div[@class='pager']/text()").all();
+        //List<String> indexPageX = page.getHtml().xpath("//div[@class='pager']/text()").all();
+        List<String> indexPageX = page.getHtml().xpath(REG_STR_BLOCKINDEXPAGE).all();
         if (indexPageX!=null&&indexPageX.size()>=1){
         	String indexPageXFlag = getPageNbr(indexPageX.get(0));
         	log.info("Find Index Page["+indexPageXFlag+"] by find flag=["+indexPageX+"]");
-        	//page.putField("title", "index-"+indexPageXFlag);
-        	
-        	//设定taggedpage（为普通index）
+        	//设定taggedpage为普通index page
         	tags.clear();
         	tags.add(new Tag(Tag.INDEXPAGE));
-        	page.putField("TaggedPage", new TaggedPage("index-"+indexPageXFlag, page.getResultItems().get("body").toString(), tags));
+        	page.putField(TaggedPage.TAGGED_PAGE_FLAG, new TaggedPage("index-"+indexPageXFlag,page.getRawText(), tags));
         }
         
         //skip this page
