@@ -10,14 +10,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import MySpider.pipeline.SaveRawPageAsHtmlPipeline;
 import MySpider.taggedpage.Tag;
 import MySpider.taggedpage.TaggedPage;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
-import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.pipeline.FilePipeline;
-import us.codecraft.webmagic.pipeline.JsonFilePipeline;
 import us.codecraft.webmagic.processor.PageProcessor;
 
 /**
@@ -41,7 +37,7 @@ public class CnblogsPersonalBlogProcessor  implements PageProcessor {
     //私人blog的主页（第一个index页）
     private static final String REG_STR_BLOGHOMEPAGE="//div[@id='nav_next_page']/a/text()";
     //私人blog的index（主页作为index1，这里指其他index页）
-    private static final String REG_STR_BLOCKINDEXPAGE="//div[@class='pager']/text()";
+    private static final String REG_STR_BLOGINDEXPAGE="//div[@class='pager']/text()";
 
     //查找普通blog的link并添加到挖掘列表
     private void scanBlogPageUrl(Page page){
@@ -70,7 +66,7 @@ public class CnblogsPersonalBlogProcessor  implements PageProcessor {
         //探测homepage标记：如果是第一页，则右下角有一个“下一页”
         String firstIndexPageFlag = page.getHtml().xpath(REG_STR_BLOGHOMEPAGE).toString();
         //探测非第一页homepage的其他index page，有“共X页”结构；
-        List<String> indexPageX = page.getHtml().xpath(REG_STR_BLOCKINDEXPAGE).all();
+        List<String> indexPageX = page.getHtml().xpath(REG_STR_BLOGINDEXPAGE).all();
         //探测普通blog page应该包含的TITLE字段
         String pageTitle = page.getHtml().xpath(REG_STR_TITLEFIELD).toString();
         //log.info("Got page title=["+pageTitle+"]");
@@ -100,7 +96,7 @@ public class CnblogsPersonalBlogProcessor  implements PageProcessor {
         	//非homepage，非index page，非有title的blogpage，无需做级联的url scan
         	page.setSkip(true);
         	//非homepage，非index page，非有title的blogpage，设定tag为默认；
-//        	page.putField(TaggedPage.TAGGED_PAGE_FLAG, new TaggedPage(pageTitle, page.getRawText(), 
+//        	page.putField(ITaggedPage.TAGGED_PAGE_FLAG, new ITaggedPage(pageTitle, page.getRawText(), 
 //        			clearAndGetTagBag(new Tag(Tag.DEFAULT))));
         }
     }

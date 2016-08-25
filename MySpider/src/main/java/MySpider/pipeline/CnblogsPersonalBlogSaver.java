@@ -80,11 +80,11 @@ public class CnblogsPersonalBlogSaver extends FilePipeline implements TaggedPage
 	}
 	
 	private void log(TaggedPage tdPage) {
-		log.warn("Method 'log(TaggedPage tdPage)' has not implemented yet!");
+		log.warn("Method 'log(ITaggedPage tdPage)' has not implemented yet!");
 	}
 
 	private void dump(TaggedPage tdPage) {
-		log.warn("Method 'dump(TaggedPage tdPage)' has not implemented yet!");
+		log.warn("Method 'dump(ITaggedPage tdPage)' has not implemented yet!");
 	}
 
 	private void savePageAsExtName(TaggedPage tdPage, String extensionName) {

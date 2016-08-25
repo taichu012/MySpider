@@ -1,13 +1,11 @@
 package MySpider.taggedpage;
 
 public class Tag {
-	
-	public static final String HOMEPAGE="homePage"; 
-	public static final String INDEXPAGE="indexPage";
-	public static final String BLOGPAGE="blogPage";
-	public static final String UNKNOWN_PAGE="unknownPage";
-	public static final String DEFAULT=UNKNOWN_PAGE;
 
+	public static final String HOMEPAGE = "homePage";
+	public static final String INDEXPAGE = "indexPage";
+	public static final String BLOGPAGE = "blogPage";
+	public static final String UNKNOWN_PAGE = "unknownPage";
 
 	private String tag;
 
@@ -23,9 +21,9 @@ public class Tag {
 		super();
 		this.tag = tag;
 	}
-	
+
 	public Tag() {
 		super();
-		this.tag = DEFAULT;
+		this.tag = UNKNOWN_PAGE;
 	}
 }

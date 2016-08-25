@@ -1,4 +1,4 @@
-package MySpider.taggedpage;
+package MySpider.pagemodel;
 
 public class Action {
 	public static final int NO_ACTION = 1; // 默认action，等价于mute哑状态，意味着并不额外增加操作；
