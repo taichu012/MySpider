@@ -7,7 +7,7 @@ public class TaggedPage {
 	private String name;
 	private String content;
 	private long generatedTimeMs;
-	private ArrayList<Tag> tags;
+	private ArrayList<Tag> tagBag;
 	
 	
 	
@@ -16,13 +16,13 @@ public class TaggedPage {
 	 * 定义page的名称name，内容content，逻辑标签集合tags
 	 * @param name name
 	 * @param content content
-	 * @param tags tags
+	 * @param tagBag tagBag
 	 */
 	public TaggedPage(String name, String content, ArrayList<Tag> tags) {
 		super();
 		this.name = name;
 		this.content = content;
-		this.tags = tags;
+		this.tagBag = tags;
 		this.generatedTimeMs=System.currentTimeMillis();
 	}
 	
@@ -31,7 +31,7 @@ public class TaggedPage {
 		this.name = name;
 		this.content = content;
 		this.generatedTimeMs = generatedTimeMs;
-		this.tags = tags;
+		this.tagBag = tags;
 	}
 
 	public long getGeneratedTimeMs() {
@@ -51,9 +51,9 @@ public class TaggedPage {
 		this.content = content;
 	}
 	public ArrayList<Tag> getTags() {
-		return tags;
+		return tagBag;
 	}
 	public void setTags(ArrayList<Tag> tags) {
-		this.tags = tags;
+		this.tagBag = tags;
 	}
 }

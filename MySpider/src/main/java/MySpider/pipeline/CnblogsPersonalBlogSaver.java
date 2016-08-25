@@ -22,16 +22,16 @@ public class CnblogsPersonalBlogSaver extends FilePipeline implements TaggedPage
 	private static Logger log = Logger.getLogger(CnblogsPersonalBlogSaver.class);
 	
 	//初始化规则：通过设定<tag,action> pair对应关系来绑定tag驱动的action；
-	private HashMap<String, Action> tagActionMappingRules = new HashMap<String, Action>();
+	private HashMap<String, Action> tagDrivenActionRuleMatrix = new HashMap<String, Action>();
 	
 	/**
 	 * 定义tag和action的对应规则
 	 */
 	public void initRules() {
-		tagActionMappingRules.put(Tag.UNKNOWN_PAGE, new Action(Action.NO_ACTION));
-		tagActionMappingRules.put(Tag.HOMEPAGE, new Action(Action.SAVE_AS_HTML));
-		tagActionMappingRules.put(Tag.INDEXPAGE, new Action(Action.SAVE_AS_HTML));
-		tagActionMappingRules.put(Tag.BLOGPAGE, new Action(Action.SAVE_AS_HTML));
+		tagDrivenActionRuleMatrix.put(Tag.UNKNOWN_PAGE, new Action(Action.NO_ACTION));
+		tagDrivenActionRuleMatrix.put(Tag.HOMEPAGE, new Action(Action.SAVE_AS_HTML));
+		tagDrivenActionRuleMatrix.put(Tag.INDEXPAGE, new Action(Action.SAVE_AS_HTML));
+		tagDrivenActionRuleMatrix.put(Tag.BLOGPAGE, new Action(Action.SAVE_AS_HTML));
 	}
 	
 	/**
@@ -39,7 +39,7 @@ public class CnblogsPersonalBlogSaver extends FilePipeline implements TaggedPage
 	 */
 	public CnblogsPersonalBlogSaver() {
 		//设定默认绝对路径，如果初始化的时候没有设定（只支持win）
-		setPath("c:/data/myspider/");
+		setPath("c:/temp/myspider/cnblogs/");
 		initRules();
 	}
 
@@ -62,8 +62,7 @@ public class CnblogsPersonalBlogSaver extends FilePipeline implements TaggedPage
 			Tag currentTag=it.next();
 			Action action=getAction(currentTag);
 			if (action==null) {return;}
-			it.remove();//删除已经找到了对于aciton的tag；
-			
+			it.remove();//删除已经处理过对于aciton的tag标签；
 			switch (action.getAction()){
 			case Action.NO_ACTION:break;//do nothing
 			case Action.DUMP:dump(tdPage);break;
@@ -77,7 +76,7 @@ public class CnblogsPersonalBlogSaver extends FilePipeline implements TaggedPage
 	}
 
 	private Action getAction(Tag tag){
-		return tagActionMappingRules.get(tag.getTag());
+		return tagDrivenActionRuleMatrix.get(tag.getTag());
 	}
 	
 	private void log(TaggedPage tdPage) {
