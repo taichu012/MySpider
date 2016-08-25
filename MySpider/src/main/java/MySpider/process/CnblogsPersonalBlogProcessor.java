@@ -10,14 +10,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import MySpider.pipeline.SaveRawPageAsHtmlPipeline;
 import MySpider.taggedpage.Tag;
 import MySpider.taggedpage.TaggedPage;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
-import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.pipeline.FilePipeline;
-import us.codecraft.webmagic.pipeline.JsonFilePipeline;
 import us.codecraft.webmagic.processor.PageProcessor;
 
 /**
