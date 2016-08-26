@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import MySpider.pagemodel.cnblogs.personnalblog.BlogIndex;
+import MySpider.pagemodel.cnblogs.personnalblog.BlogPage;
 import MySpider.pagemodel.cnblogs.personnalblog.Homepage;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;

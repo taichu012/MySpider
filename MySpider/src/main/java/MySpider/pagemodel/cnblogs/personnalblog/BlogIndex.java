@@ -1,9 +1,10 @@
-package MySpider.pagemodel;
+package MySpider.pagemodel.cnblogs.personnalblog;
 
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import MySpider.pagemodel.TaggedPage;
 import us.codecraft.webmagic.Page;
 
 public class BlogIndex extends TaggedPage{
