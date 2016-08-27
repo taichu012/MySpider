@@ -1,122 +1,59 @@
 package MySpider.pagemodel;
 
-import java.util.List;
-import java.util.function.Function;
-
-import org.apache.log4j.Logger;
-
 import us.codecraft.webmagic.Page;
 
-public class TaggedPage implements ITaggedPage{
-	private static Logger log = Logger.getLogger(TaggedPage.class);
+public interface TaggedPage {
+	/**
+	 * TAGGED_PAGE_FLAG 全局标记
+	 */
+	public static final String TAGGED_PAGE_FLAG="TAGGED_PAGE";
 	
-	private String regexOfIdentify=".*";
-	private String identify="";
-	private List<String> regexOfSuccessorTaggedPage = null;
+	/**
+	 * 鉴定page是否为符合定义的目标page
+	 * @return ture - 当前page为目标page
+	 */
+	public boolean identify();
+	/**
+	 * 搜索后继的page
+	 */
+	public void scanSuccessorPage();
+	/**
+	 * 保存当前页的必要数据
+	 */
+	public void captureData();
+	/**
+	 * 设入当前Page 
+	 * @param page - 从webmagic的process来
+	 */
+	public void setPage(Page page);
+	/**
+	 * 设定子类的类型type名称，用于一些信息输出等方便使用
+	 * @param name - sub class name of tagged page
+	 */
+	public String getPageType();
+	/**
+	 * 处理page（比如保存为html等）
+	 */
+	public void handlePage();
+	/**
+	 * 设定保存的物理路径（不包含文件名），一般用“/”;如果不保存文件可忽略此参数;
+	 * @param path
+	 */
+	public void setSavePath(String path);
+	/**
+	 * 返回tagged page name;
+	 * @return String 
+	 */
+	public String getName();
+	/**
+	 * 返回tagged page content;
+	 * @return String 
+	 */
+	public String getContent();
+	/**
+	 * 返回tagged page name;
+	 * @return long 
+	 */
+	public long getCapturedTimeMs();
 	
-	private String name;
-	private String content;
-	private long capturedTimeMs;
-
-	public TaggedPage(String regexOfIdentify, String identify
-			, List<String> regexOfSuccessorTaggedPage
-			//, Isme func
-			) {
-		this.regexOfIdentify=regexOfIdentify;
-		this.identify=identify;
-		this.regexOfSuccessorTaggedPage=regexOfSuccessorTaggedPage;
-		//this.isme=func;
-	}
-	
-	/*
-	public interface Isme {
-		boolean isIdentified(Page page);
-		boolean a(Page page);
-	}
-	
-	private Isme isme=null;
-	
-	public boolean Isme(Page page, Isme func){
-		func.isIdentified(page);
-		func.a(page);
-		
-		return false;
-	}
-	
-	//private IdentifyPage<Page,boolean> check = (x) -> {return true;};  
-
-
-	public static Function<Page,Boolean> func = (x) -> {return true;};  
-	
-	
-	static {
-		System.out.println(func.apply(new Page()));  
-	}
-	*/
-
-	
-	
-	
-	
-
-	@Override
-	public boolean isIdentified(Page page) {
-		if (page==null||regexOfIdentify==null||regexOfIdentify.length()<=0
-				||identify==null||identify.length()<=0) return false;
-		String flag=page.getHtml().xpath(regexOfIdentify).toString();
-		if (flag!=null&&flag.equals(identify)){
-			log.info("Find TARGET Page with match identify ["+identify+"].");
-			return true;
-		}else {
-			return false;
-		}
-	}
-
-	public String getStringField(Page page, String regex) {
-		if (page==null||regex==null||regex.length()<=0) return null;
-		return page.getHtml().xpath(regex).toString();
-	}
-
-	public List<String> getStringFields(Page page, String regex) {
-		if (page==null||regex==null||regex.length()<=0) return null;
-		 return page.getHtml().xpath(regex).all();
-	}
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public long getCapturedTimeMs() {
-		return capturedTimeMs;
-	}
-
-	public void setCapturedTimeMs(long capturedTimeMs) {
-		this.capturedTimeMs = capturedTimeMs;
-	}
-
-	@Override
-	public void setSuccessorTaggedPage(Page page) {
-		if (page==null||regexOfSuccessorTaggedPage==null||regexOfSuccessorTaggedPage.size()<=0) return;
-		for (int i=0; i<regexOfSuccessorTaggedPage.size(); i++){
-			page.addTargetRequests(page.getHtml().links().regex(regexOfSuccessorTaggedPage.get(i)).all());
-		}
-	}
-
-	public List<String>getAllLinks(Page page, String regex) {
-		if (page==null||regex==null||regex.length()<=0) return null;
-		return page.getHtml().xpath(regex).links().all();
-	}
-
 }

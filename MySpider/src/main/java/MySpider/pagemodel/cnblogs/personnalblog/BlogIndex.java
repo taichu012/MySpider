@@ -5,10 +5,13 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import MySpider.pagemodel.TaggedPage;
+import MySpider.pagemodel.TaggedPageBase;
+import MySpider.pagemodel.TaggedPageUtil;
 import us.codecraft.webmagic.Page;
 
-public class BlogIndex extends TaggedPage{
+public class BlogIndex extends TaggedPageBase implements TaggedPage{
 	private static Logger log = Logger.getLogger(BlogIndex.class);
+	private static TaggedPageUtil tputil=TaggedPageUtil.getTPU();
 	
 	//私人blog的主页（第一个index页）
 	public static String REGEX_IDENTIFY="//div[@class='pager']/text()";
@@ -17,38 +20,39 @@ public class BlogIndex extends TaggedPage{
     private static final String REGEX_BLOG_PAGE="(http://www\\.cnblogs\\.com/taichu/\\w+/\\w+.html)";
     //私人blog的index（主页作为index1，这里指其他index页）
     private static final String REGEX_BLOG_INDEX_PAGE="//div[@class='pager']/text()";
-	public static List<String> REGEX_SUCCESSOR_TAGGED_PAGE=null;
+	public static List<String> REGEX_SUCCESSOR_PAGES=null;
 	static {
-		//将多个tagged page级联成为model
-		REGEX_SUCCESSOR_TAGGED_PAGE.add(REGEX_BLOG_PAGE);
-		REGEX_SUCCESSOR_TAGGED_PAGE.add(REGEX_BLOG_INDEX_PAGE);
+		REGEX_SUCCESSOR_PAGES.add(REGEX_BLOG_PAGE);
+		REGEX_SUCCESSOR_PAGES.add(REGEX_BLOG_INDEX_PAGE);
 	}
-	private String blogIndexX=""; 
-	
-	/**
-	 * 默认无参数构造函数会将开发时定义的静态参数放入
-	 * 如果需要runtime修改，可参考base class getter/setter.
-	 */
-	public BlogIndex() {
-		super(REGEX_IDENTIFY,IDENTIFY, REGEX_SUCCESSOR_TAGGED_PAGE);
-	}
-	
-	public BlogIndex(String regexOfIdentify, String identify, List<String> regexOfSuccessorTaggedPage) {
-		super(regexOfIdentify, identify, regexOfSuccessorTaggedPage);
-	}
-	
-	
-	@Override
-	public boolean isIdentified(Page page) {
-		if (page==null) return false;
-		List<String> flag=page.getHtml().xpath(REGEX_IDENTIFY).all();
+	private String blogIndexNbr=""; 
+
+	public boolean identify() {
+		if (getPage()==null) return false;
+		List<String> flag=getPage().getHtml().xpath(REGEX_IDENTIFY).all();
 		if (flag!=null&&flag.size()>=1){
-			blogIndexX = getPageNbr(flag.get(0));
-        	log.info("Find Index Page["+blogIndexX+"].");
+			blogIndexNbr = getPageNbr(flag.get(0));
+        	log.info("Find Index Page["+blogIndexNbr+"].");
 			return true;
 		}else {
 			return false;
 		}
+	}
+	
+	public void scanSuccessorPage() {
+		tputil.scanSuccessorPageByRegexs(getPage(),
+				REGEX_SUCCESSOR_PAGES);
+	}
+
+	public void captureData() {
+		this.setName("index-"+blogIndexNbr);
+		this.setContent(tputil.getRawPage(getPage()));
+		this.setCapturedTimeMs(System.currentTimeMillis());
+		getPage().putField(TaggedPage.TAGGED_PAGE_FLAG,this);
+	}
+
+	public void handlePage() {
+		tputil.savePageAsExtName(this, "html", getPath());
 	}
 	
 	

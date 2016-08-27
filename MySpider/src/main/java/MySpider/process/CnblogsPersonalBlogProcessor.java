@@ -96,7 +96,7 @@ public class CnblogsPersonalBlogProcessor  implements PageProcessor {
         	//非homepage，非index page，非有title的blogpage，无需做级联的url scan
         	page.setSkip(true);
         	//非homepage，非index page，非有title的blogpage，设定tag为默认；
-//        	page.putField(ITaggedPage.TAGGED_PAGE_FLAG, new ITaggedPage(pageTitle, page.getRawText(), 
+//        	page.putField(TaggedPage.TAGGED_PAGE_FLAG, new TaggedPage(pageTitle, page.getRawText(), 
 //        			clearAndGetTagBag(new Tag(Tag.DEFAULT))));
         }
     }
